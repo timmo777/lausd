@@ -1,5 +1,5 @@
 let cols, rows;
-let w = 30;
+let w = 40;
 let grid = [];
 
 let current;
@@ -37,9 +37,10 @@ function draw() {
 
     }
     current.visited = true;
+    current.highlight();
+    //step1
     let next = current.checkNeighbors();
     if (next) {
-        //step1
         next.visited = true;
 
         //step 3
@@ -107,6 +108,16 @@ function Cell(i, j) {
 
     }
 
+
+    this.highlight = function() {
+        let x = this.i * w;
+        let y = this.j * w;
+
+        noStroke();
+        fill(0, 0, 255, 100);
+        rect(x, y, w, w);
+
+    }
 
     this.show = function() {
         let x = this.i * w;
