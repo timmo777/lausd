@@ -1,12 +1,13 @@
 let cols, rows;
-let w = 40;
+let w = 50;
 let grid = [];
-
+let stack = [];
 let current;
 
 
+
 function setup() {
-    createCanvas(800, 800);
+    createCanvas(1000, 1000);
 
     cols = floor(width / w);
     rows = floor(height / w);
@@ -43,12 +44,17 @@ function draw() {
     if (next) {
         next.visited = true;
 
+        //step 2
+        stack.push(current);
+
         //step 3
         removeWalls(current, next);
 
         //step 4
         current = next;
 
+    } else if (stack.length > 0) {
+        current = stack.pop();
     }
 }
 
