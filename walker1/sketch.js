@@ -1,5 +1,5 @@
 let cols, rows;
-let spinner = 40
+let spinner = 25
 let w = spinner;
 let h = spinner;
 
@@ -23,8 +23,8 @@ function removeFromArray(arr, element) {
 
 function setup() {
 
-    let debug = true;
-    createCanvas(400, 400);
+    let debug = false;
+    createCanvas(1000, 1000);
 
     let cols = floor(width / w);
     let rows = floor(height / h);
@@ -38,7 +38,7 @@ function setup() {
     grid = new Array(cols);
 
     if (debug) console.log(new Date() + ' ' + 'Show grid (nulls):' + JSON.stringify(grid, null, 4));
-    frameRate(5);
+    // frameRate(5);
 
 
     for (let i = 0; i < cols; i++) {
@@ -83,11 +83,13 @@ function setup() {
 
 function heuristic(a, b) {
 
-    console.log(new Date() + ' ' + 'Value of A' + JSON.stringify(a, null, 4));
-    console.log(new Date() + ' ' + 'Value of B' + JSON.stringify(b, null, 4));
+    let debug = false;
 
-    let d = dist(a.i, a.j, b.i, b.j);
-    d = abs(a.i - b.i) + abs(a.j - b.j);
+    if (debug) console.log(new Date() + ' ' + 'Value of A' + JSON.stringify(a, null, 4));
+    if (debug) console.log(new Date() + ' ' + 'Value of B' + JSON.stringify(b, null, 4));
+
+    let d = dist(a.i, a.j, b.i, b.j); //distance
+    d = abs(a.i - b.i) + abs(a.j - b.j); //manhattan distance or taxi cab.
     return d;
 }
 
@@ -97,7 +99,7 @@ function draw() {
 
 
 
-    console.log(new Date() + ' ' + 'openSet:' + JSON.stringify(openSet, null, 4));
+    if (debug) console.log(new Date() + ' ' + 'openSet:' + JSON.stringify(openSet, null, 4));
     if (openSet.length > 0) {
 
         let winner = 0;
@@ -125,12 +127,12 @@ function draw() {
 
         let elements = current.neighbors;
 
-        console.log(new Date() + ' ' + 'Iterating over neighbors: ' + current.neighbors);
+        if (debug) console.log(new Date() + ' ' + 'Iterating over neighbors: ' + current.neighbors);
         elements.forEach(telement => {
 
             element = grid[telement.i][telement.j];
 
-            console.log(new Date() + ' ' + 'element:' + JSON.stringify(element, null, 4));
+            if (debug) console.log(new Date() + ' ' + 'element:' + JSON.stringify(element, null, 4));
             if (!closedSet.includes(element)) {
 
                 let tempGValues = current.g + 1;
@@ -143,7 +145,7 @@ function draw() {
                     element.g = tempGValues;
                     openSet.push(element);
                 }
-                console.log(new Date() + ' ' + 'Calling heuristicwith element: ' + JSON.stringify(element, null, 4));
+                if (debug) console.log(new Date() + ' ' + 'Calling heuristicwith element: ' + JSON.stringify(element, null, 4));
                 element.h = heuristic(element, endPosition);
                 element.f = element.g + element.h;
                 element.previous = current;
@@ -258,7 +260,7 @@ function TNode(i, j, blocked) {
     this.addNeighbors = function(cols, rows) {
 
         console.log(new Date() + ' ' + '+addNeighbors');
-        let debug = true;
+        let debug = false;
 
         let i = this.i;
         let j = this.j;
