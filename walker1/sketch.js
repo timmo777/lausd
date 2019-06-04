@@ -1,5 +1,5 @@
 let cols, rows;
-let spinner = 25
+let spinner = 20
 let w = spinner;
 let h = spinner;
 
@@ -133,7 +133,7 @@ function draw() {
             element = grid[telement.i][telement.j];
 
             if (debug) console.log(new Date() + ' ' + 'element:' + JSON.stringify(element, null, 4));
-            if (!closedSet.includes(element)) {
+            if (!closedSet.includes(element) && !element.blocked) {
 
                 let tempGValues = current.g + 1;
 
@@ -154,8 +154,9 @@ function draw() {
     } else {
 
         //No Solution
-        console.log(new Date() + ' ' + 'Solution Found');
-
+        console.log(new Date() + ' ' + 'Solution Not Found');
+        // noLoop();
+        // return;
     }
 
 
@@ -198,7 +199,7 @@ function draw() {
 function determineBlocked() {
     let retVal = false;
     let randomNumber = random();
-    if (randomNumber < .15) {
+    if (randomNumber < .30) {
         retVal = true;
     }
     return retVal;
@@ -226,7 +227,9 @@ function TNode(i, j, blocked) {
     this.show = function(col) {
 
         fill(col);
-        // noStroke();
+        if (this.blocked) {
+            fill(0);
+        }
         stroke(0);
         rect(this.i * w, this.j * w, this.correctWidth, this.correctHeigth);
 
